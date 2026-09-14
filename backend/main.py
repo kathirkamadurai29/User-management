@@ -32,17 +32,25 @@ app = FastAPI(
 # Connect to database
 connect_mongodb()
 
-# CORS Middleware locked to known origins
-raw_origins = os.getenv("CORS_ORIGIN", "http://localhost:5173,http://127.0.0.1:5173")
-origins = [o.strip() for o in raw_origins.split(",") if o.strip()]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allow_headers=["*"],
-)
+# CORS Middleware configured for local and cloud/Vercel deployments
+raw_origins = os.getenv("CORS_ORIGIN", "*")
+if raw_origins == "*" or not raw_origins:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=False,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+else:
+    origins = [o.strip() for o in raw_origins.split(",") if o.strip()]
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins,
+        allow_credentials=True,
+        allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        allow_headers=["*"],
+    )
 
 # Global Request Activity Logger for MongoDB
 app.add_middleware(ActivityLoggingMiddleware)

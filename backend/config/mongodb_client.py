@@ -13,7 +13,11 @@ _mongo_client: Optional[MongoClient] = None
 _db = None
 is_connected = False
 
-FALLBACK_FILE = os.path.join(os.path.dirname(__file__), "..", ".mongo_fallback.json")
+FALLBACK_FILE = (
+    os.path.join(os.environ.get("TMPDIR", "/tmp"), ".mongo_fallback.json")
+    if os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME")
+    else os.path.join(os.path.dirname(__file__), "..", ".mongo_fallback.json")
+)
 
 
 def _load_fallback() -> Dict[str, List[Dict[str, Any]]]:
