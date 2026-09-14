@@ -1,5 +1,11 @@
 import os
+import sys
 from dotenv import load_dotenv
+
+# Ensure backend directory is in sys.path for root and serverless entrypoints
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+if CURRENT_DIR not in sys.path:
+    sys.path.insert(0, CURRENT_DIR)
 
 # Load environment variables
 load_dotenv()
