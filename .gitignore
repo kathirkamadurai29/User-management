@@ -1,0 +1,39 @@
+# Environment variables (NEVER commit secrets to git)
+.env
+*.env.local
+*.env.*.local
+backend/.env
+frontend/.env
+
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+
+# Build artifacts
+frontend/dist/
+dist/
+build/
+
+# Database fallback & local temporary files
+.clients_fallback.json
+.mongo_fallback.json
+backend/.clients_fallback.json
+backend/.mongo_fallback.json
+*.log
+npm-debug.log*
+
+# OS & IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Binaries
+cloudflared.exe
