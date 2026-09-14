@@ -2,6 +2,13 @@ import os
 import json
 from datetime import datetime, timezone
 from typing import Optional, Dict, Any
+from dotenv import load_dotenv
+
+env_file = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".env"))
+if os.path.exists(env_file):
+    load_dotenv(env_file)
+else:
+    load_dotenv()
 
 supabase_url = os.getenv("SUPABASE_URL", "").strip()
 supabase_key = os.getenv("SUPABASE_SERVICE_ROLE_KEY", "").strip()

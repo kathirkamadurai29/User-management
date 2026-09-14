@@ -3,6 +3,13 @@ import json
 import re
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
+from dotenv import load_dotenv
+
+env_file = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".env"))
+if os.path.exists(env_file):
+    load_dotenv(env_file)
+else:
+    load_dotenv()
 from bson import ObjectId
 from pymongo import MongoClient
 
