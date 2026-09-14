@@ -197,7 +197,7 @@ class FallbackDatabase:
 def connect_mongodb():
     global _mongo_client, _db, is_connected
     try:
-        _mongo_client = MongoClient(MONGODB_URI, serverSelectionTimeoutMS=500, connectTimeoutMS=500)
+        _mongo_client = MongoClient(MONGODB_URI, serverSelectionTimeoutMS=5000, connectTimeoutMS=5000)
         _mongo_client.admin.command('ping')
         _db = _mongo_client[MONGODB_DB_NAME]
         is_connected = True
