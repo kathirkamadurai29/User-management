@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: user-management-platform
+    runtime: docker
+    plan: free
+    region: oregon
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: CORS_ORIGIN
+        value: "*"
