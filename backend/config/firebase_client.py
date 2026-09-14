@@ -1,4 +1,12 @@
 import os
+from dotenv import load_dotenv
+
+env_file = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".env"))
+if os.path.exists(env_file):
+    load_dotenv(env_file)
+else:
+    load_dotenv()
+
 from datetime import datetime, timezone
 from typing import Dict, Any
 
@@ -13,11 +21,20 @@ try:
     client_email = os.getenv("FIREBASE_CLIENT_EMAIL")
     private_key = os.getenv("FIREBASE_PRIVATE_KEY")
 
-    if cred_path and os.path.exists(cred_path):
-        cred = credentials.Certificate(cred_path)
-        firebase_admin.initialize_app(cred)
-        is_firebase_initialized = True
-        print("[Firebase Admin] Initialized with service account file")
+    if cred_path:
+        possible_paths = [
+            cred_path,
+            os.path.abspath(os.path.join(os.path.dirname(__file__), "..", cred_path)),
+            os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "serviceAccountKey.json")),
+            os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "ServiceAccountKey.json")),
+            os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "ServiceAccountKey.json.json")),
+        ]
+        found_path = next((p for p in possible_paths if os.path.exists(p)), None)
+        if found_path:
+            cred = credentials.Certificate(found_path)
+            firebase_admin.initialize_app(cred)
+            is_firebase_initialized = True
+            print(f"[Firebase Admin] Initialized with service account file: {os.path.basename(found_path)}")
     elif project_id and client_email and private_key:
         private_key = private_key.replace("\\n", "\n")
         cred = credentials.Certificate({
